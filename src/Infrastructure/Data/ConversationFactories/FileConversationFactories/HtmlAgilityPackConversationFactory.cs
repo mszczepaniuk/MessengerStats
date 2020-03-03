@@ -46,6 +46,7 @@ namespace Infrastructure.Data.ConversationFactories.FileConversationFactories
             {
                 ProccessNode(node);
             }
+            conversation.Users.RemoveAll(x => !x.Messages.Any() && !x.Reactions.Any());
             return conversation;
         }
 
