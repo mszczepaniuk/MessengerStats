@@ -9,6 +9,6 @@ namespace ApplicationCore.Interfaces
     public interface IFileConversationFactory
     {
         public Conversation Create(string filePath);
-        public Conversation Create(List<string> filePaths);
+        public Conversation Create(FileStream file);
     }
 }

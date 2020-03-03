@@ -11,6 +11,10 @@ namespace ApplicationCore.Entities
         public List<Message> Messages { get; set; }
         public List<Reaction> Reactions { get; set; }
 
+        /// <summary>
+        /// Fully deletes message and it's reactions from conversation.
+        /// </summary>
+        /// <param name="message">Message to delete.</param>
         public void DeleteMessage(Message message)
         {
             Messages.Remove(message);
@@ -22,6 +26,10 @@ namespace ApplicationCore.Entities
             }
         }
 
+        /// <summary>
+        /// Fully deletes user and it's reactions and messages from conversation.
+        /// </summary>
+        /// <param name="message">Message to delete.</param>
         public void DeleteUser(User user)
         {
             Users.Remove(user);
@@ -41,6 +49,10 @@ namespace ApplicationCore.Entities
             }
         }
 
+        /// <summary>
+        /// Fully deletes reaction from conversation.
+        /// </summary>
+        /// <param name="message">Reaction to delete.</param>
         public void DeleteReaction(Reaction reaction)
         {
             Reactions.Remove(reaction);

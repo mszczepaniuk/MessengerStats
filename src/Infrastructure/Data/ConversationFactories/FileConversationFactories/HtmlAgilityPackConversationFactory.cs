@@ -23,32 +23,28 @@ namespace Infrastructure.Data.ConversationFactories.FileConversationFactories
         {
             this.htmlConstants = htmlConstants;
             this.messageConstants = messageConstants;
-            InitializeConversationProperties();
         }
 
         public virtual Conversation Create(string filePath)
         {
             htmlDocument.Load(filePath);
+            return Create();
+        }
+
+        public virtual Conversation Create(FileStream file)
+        {
+            htmlDocument.Load(file);
+            return Create();
+        }
+
+        protected virtual Conversation Create()
+        {
+            InitializeConversationProperties();
             SetTitle();
             var nodes = htmlDocument.DocumentNode.SelectNodes(htmlConstants.MessageNodeXPath);
             foreach (var node in nodes)
             {
                 ProccessNode(node);
-            }
-            return conversation;
-        }
-
-        public virtual Conversation Create(List<string> filePaths)
-        {
-            for (int i = 0; i < filePaths.Count; i++)
-            {
-                htmlDocument.Load(filePaths[i]);
-                if (i == 0) { SetTitle(); }
-                var nodes = htmlDocument.DocumentNode.SelectNodes(htmlConstants.MessageNodeXPath);
-                foreach (var node in nodes)
-                {
-                    ProccessNode(node);
-                }
             }
             return conversation;
         }

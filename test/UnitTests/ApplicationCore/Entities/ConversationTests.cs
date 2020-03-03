@@ -107,7 +107,7 @@ namespace UnitTests.ApplicationCore.Entities
 
             reaction = new Reaction { Message = conversation.Messages[5], ReactionType = ReactionType.Angry, User = user3 };
             conversation.Reactions.Add(reaction);
-            user1.Reactions.Add(reaction);
+            user3.Reactions.Add(reaction);
             conversation.Messages[5].Reactions.Add(reaction);
 
             return conversation;
