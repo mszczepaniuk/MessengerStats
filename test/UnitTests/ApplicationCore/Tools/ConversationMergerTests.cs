@@ -8,13 +8,13 @@ using Xunit;
 
 namespace UnitTests.ApplicationCore.Tools
 {
-    public class ConversationFromFilesMergerTests
+    public class ConversationMergerTests
     {
-        private ConversationFromFilesMerger merger;
+        private ConversationMerger merger;
 
-        public ConversationFromFilesMergerTests()
+        public ConversationMergerTests()
         {
-            merger = new ConversationFromFilesMerger();
+            merger = new ConversationMerger();
         }
 
         [Fact]

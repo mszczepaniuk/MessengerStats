@@ -7,19 +7,19 @@ using System.Linq;
 
 namespace ApplicationCore.Tools
 {
-    public class ConversationFromFilesMerger : IConversationMerger
+    public class ConversationMerger : IConversationMerger
     {
-        private Conversation firstConversation;
-        private Conversation secondConversation;
-        private DateTime overlapEarlierDate;
-        private DateTime overlapLaterDate;
+        protected Conversation firstConversation;
+        protected Conversation secondConversation;
+        protected DateTime overlapEarlierDate;
+        protected DateTime overlapLaterDate;
 
         /// <summary>
         /// Merges all provided conversations into the first one in the list. Might modify provided conversations.
         /// </summary>
         /// <param name="conversations">Conversations to merge.</param>
         /// <returns>Merged conversation</returns>
-        public Conversation Merge(List<Conversation> conversations)
+        public virtual Conversation Merge(List<Conversation> conversations)
         {
             if (conversations.Count < 2)
             {
@@ -36,7 +36,7 @@ namespace ApplicationCore.Tools
             return firstConversation;
         }
 
-        private Conversation MergeTwoConversations()
+        protected virtual Conversation MergeTwoConversations()
         {
             if (IsSecondConversationASubsetOfFirstConversation())
             {
@@ -50,7 +50,7 @@ namespace ApplicationCore.Tools
 
             if (IsThereAnOverlap())
             {
-                RemoveOverlappedMessagesFromSecondConversation();
+                ProcessOverlappedMessages();
             }
 
             EnsureFirstConversationIsYounger();
@@ -66,6 +66,16 @@ namespace ApplicationCore.Tools
             }
 
             return firstConversation;
+        }
+
+        protected virtual void ProcessOverlappedMessages()
+        {
+            var overlappedMessages = secondConversation.Messages.Where(x => x.CreationDate > overlapLaterDate && x.CreationDate < overlapEarlierDate).ToList();
+
+            foreach (var message in overlappedMessages)
+            {
+                secondConversation.DeleteMessage(message);
+            }
         }
 
         private void MergeUsers(User[] userPair)
@@ -108,16 +118,6 @@ namespace ApplicationCore.Tools
                 var tempConv = firstConversation;
                 firstConversation = secondConversation;
                 secondConversation = tempConv;
-            }
-        }
-
-        private void RemoveOverlappedMessagesFromSecondConversation()
-        {
-            var overlappedMessages = secondConversation.Messages.Where(x => x.CreationDate > overlapLaterDate && x.CreationDate < overlapEarlierDate).ToList();
-
-            foreach (var message in overlappedMessages)
-            {
-                secondConversation.DeleteMessage(message);
             }
         }
 
