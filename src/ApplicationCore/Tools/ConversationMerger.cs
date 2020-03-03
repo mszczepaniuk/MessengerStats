@@ -21,10 +21,16 @@ namespace ApplicationCore.Tools
         /// <returns>Merged conversation</returns>
         public virtual Conversation Merge(List<Conversation> conversations)
         {
-            if (conversations.Count < 2)
+            if (!conversations.Any())
             {
-                throw new ArgumentException("At least 2 conversations are required in merging process.");
+                throw new ArgumentException("At least 1 conversations are required in merging process.");
             }
+            if (conversations.Count == 1)
+            {
+                return conversations.FirstOrDefault();
+            }
+
+            conversations = conversations.OrderByDescending(x => x.Messages.FirstOrDefault().CreationDate).ToList();
             firstConversation = conversations.FirstOrDefault();
 
             for (int i = 1; i < conversations.Count; i++)
